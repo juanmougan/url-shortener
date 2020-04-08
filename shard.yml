@@ -4,6 +4,9 @@ version: 0.1.0
 authors:
   - Juan Manuel Mougan <juanmougan@gmail.com>
 
+description: |
+  Uses external providers to shorten a given URL
+
 crystal: 0.33.0
 
 license: MIT
