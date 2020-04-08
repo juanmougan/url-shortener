@@ -45,7 +45,7 @@ module UrlShortener
 
     def generate(url)
       response = HTTP::Client.get(provider_url(url))
-      puts response.body.strip.chomp
+      response.body.strip.chomp
     end
   end
 end
