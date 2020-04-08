@@ -1,9 +1,11 @@
-# TODO: Write documentation for `UrlShortener`
+# This library allows you to create shortened URLs.
 require "http/client"
 
 module UrlShortener
   VERSION = "0.1.0"
 
+  # This object will create a shortened URL using a provided provider.
+  # If no provider is given, it will use a default one instead.
   class Shortener
     property provider : TinyUrlProvider | NoOpProvider # TODO generalize (like an interface)
 
@@ -20,11 +22,13 @@ module UrlShortener
       TinyUrlProvider.new
     end
 
+    # Lets you supply a provider (optional)
     def with_provider(provider)
       self.provider = provider
       return self
     end
 
+    # Creates a shortened URL, using the provider and original url already supplied.
     def shorten
       @provider.generate(@original_url)
     end
