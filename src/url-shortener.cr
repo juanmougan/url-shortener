@@ -1,8 +1,26 @@
 # TODO: Write documentation for `Url::Shortener`
 require "http/client"
 
-module Url::Shortener
+module UrlShortener
   VERSION = "0.1.0"
+
+  class Shortener
+    @original_url : String
+    @provider : TinyUrlProvider # TODO generalize
+
+    def initialize(url : String)
+      @original_url = url
+      @provider = default_provider
+    end
+
+    def default_provider
+      TinyUrlProvider.new
+    end
+
+    def shorten
+      @provider.generate(@original_url)
+    end
+  end
 
   class TinyUrlProvider
     def prefix
@@ -19,21 +37,7 @@ module Url::Shortener
 
     def generate(url)
       response = HTTP::Client.get(provider_url(url))
-      puts response.body.strip
-    end
-  end
-
-  class URLShortener
-    def self.from_url(url)
-      self.original_url = url
-    end
-
-    def with_provider(provider)
-      self.provider = provider
-    end
-
-    def shorten
-      self.provider.generate(self.original_url)
+      puts response.body.strip.chomp
     end
   end
 end
