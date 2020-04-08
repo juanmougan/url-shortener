@@ -5,7 +5,7 @@ module UrlShortener
   VERSION = "0.1.0"
 
   class Shortener
-    property provider : TinyUrlProvider # TODO generalize
+    property provider : TinyUrlProvider | NoOpProvider # TODO generalize (like an interface)
 
     def self.from_url(url)
       Shortener.new(url)
@@ -46,6 +46,26 @@ module UrlShortener
     def generate(url)
       response = HTTP::Client.get(provider_url(url))
       response.body.strip.chomp
+    end
+  end
+
+  # TODO this is here for testing purposes.
+  # Figure out how to use some sort of interface, and provide a mock on the tests.
+  class NoOpProvider
+    def prefix
+      "http://noop.url/"
+    end
+
+    def generator_url
+      "shorten?url="
+    end
+
+    def provider_url(url)
+      prefix + generator_url + url
+    end
+
+    def generate(url)
+      provider_url(url)
     end
   end
 end
